@@ -19,10 +19,51 @@ function division(a,b){
     return a/b;
 };
 
-// console.log(add(a,b));
-// console.log(sub(a,b));
-// console.log(mul(a,b));
-// console.log(division(a,b));
+function modulus(a,b){
+    return a%b;
+}
 
-// c=add(a,b);
-// console.log(c);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const result = document.getElementById('result');
+    const numberButtons = document.querySelectorAll('.numbers .button');
+    const operatorButtons = document.querySelectorAll('.ops .button2');
+
+    let currentExpression = '';
+
+    numberButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const value = button.textContent;
+            if (value === 'clear') {
+                currentExpression = '';
+                result.textContent = '';
+            } else if (value === 'back') {
+                currentExpression = currentExpression.slice(0, -1);
+                result.textContent = currentExpression;
+            } else {
+                currentExpression += value;
+                result.textContent = currentExpression;
+            }
+        });
+    });
+
+    operatorButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const value = button.textContent;
+            if (value === '=') {
+                try {
+                    currentExpression = currentExpression.replace(/x/g, '*');
+                    const evaluatedResult = eval(currentExpression);
+                    result.textContent = evaluatedResult;
+                    currentExpression = evaluatedResult.toString();
+                } catch (error) {
+                    result.textContent = 'Error';
+                    currentExpression = '';
+                }
+            } else {
+                currentExpression += ` ${value} `;
+                result.textContent = currentExpression;
+            }
+        });
+    });
+});
